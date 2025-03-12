@@ -1,0 +1,13 @@
+task_analise_sitemap:
+  description: > 
+    Analisar um sitemap e, a partir de uma lista de urls a serem crawleadas, nos forneça um resumo bem escrito do resultado do crawle.
+  expected_output: > 
+    Um resumo conciso e objetivo do resultado do crawle.
+
+    Inclua as seguintes informações:
+    - Informações importantes encontradas.
+    - Informações relevantes encontradas.
+    
+  agent : engenheiro_web
+
+

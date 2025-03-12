@@ -1,0 +1,24 @@
+# Arquivos de ambiente
+.env
+.envcrew
+
+# Arquivos Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambiente virtual
+venv/
+env/
+ENV/
+
+# Arquivos de IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Arquivos de distribuição
+dist/
+build/
+*.egg-info/ 
