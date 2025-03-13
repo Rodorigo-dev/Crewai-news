@@ -8,6 +8,6 @@ task_analise_sitemap:
     - Informações importantes encontradas.
     - Informações relevantes encontradas.
     
-  agent : engenheiro_web
+  agent: engenheiro_web
 
 

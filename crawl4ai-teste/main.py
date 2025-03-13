@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os
+import sys
 import warnings
 
 from datetime import datetime
@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 def run():
     """
-    Run the crew.
+    Inicia a crew.
     """
     inputs = {
         'sitemap_url': 'https://docs.crewai.com/sitemap.xml'
@@ -19,6 +19,6 @@ def run():
     try:
         CrawlCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
+        raise Exception(f"Ocorreu um erro ao executar a crew: {e}")
 
 run()
