@@ -1,13 +1,20 @@
-task_analise_sitemap:
+task_analise_scholar:
   description: > 
-    Analisar um sitemap e, a partir de uma lista de urls a serem crawleadas, nos forneça um resumo bem escrito do resultado do crawle.
+    Analisar o perfil do Google Scholar usando a URL fornecida ({profile_url}) e extrair informações importantes como 
+    área principal de pesquisa, artigos relevantes e número de citações.
   expected_output: > 
-    Um resumo conciso e objetivo do resultado do crawle.
+    Um JSON contendo:
+    - Principal área de pesquisa do autor
+    - URLs de até 5 artigos relevantes
+    - Número total de citações
+  agent: analista_scholar
 
-    Inclua as seguintes informações:
-    - Informações importantes encontradas.
-    - Informações relevantes encontradas.
-    
-  agent: engenheiro_web
+task_busca_perfil:
+  description: >
+    Buscar o perfil do pesquisador '{researcher_name}' no Google Scholar usando exatamente este nome.
+    Não tente outros nomes ou variações.
+  expected_output: >
+    A URL exata do perfil do Google Scholar do pesquisador.
+  agent: buscador_scholar
 
 

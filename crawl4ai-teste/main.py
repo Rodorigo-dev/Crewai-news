@@ -10,15 +10,13 @@ warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
 def run():
     """
-    Inicia a crew.
+    Inicia a crew para busca e análise de perfil do Google Scholar.
     """
-    inputs = {
-        'sitemap_url': 'https://docs.crewai.com/sitemap.xml'
-    }
-    
     try:
-        CrawlCrew().crew().kickoff(inputs=inputs)
+        result = CrawlCrew().crew().kickoff()
+        print(result)
     except Exception as e:
         raise Exception(f"Ocorreu um erro ao executar a crew: {e}")
 
-run()
+if __name__ == "__main__":
+    run()
