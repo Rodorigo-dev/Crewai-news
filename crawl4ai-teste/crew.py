@@ -37,14 +37,27 @@ class CrawlCrew():
 
 	def save_profile_url(self, task_output):
 		"""Salva a URL do perfil no CSV"""
-		# Converter o TaskOutput para string
-		url = str(task_output).strip()
-		
-		# Atualizar o DataFrame garantindo tipo string
-		self.researchers_df.at[0, 'profile_url'] = str(url)
-		
-		# Salvar no CSV
-		self.researchers_df.to_csv(self.csv_path, index=False)
+		try:
+			# Converter o TaskOutput para string e limpar
+			url = str(task_output).strip()
+			print(f"Salvando URL no CSV: {url}")  # Debug
+			
+			# Verificar se a URL é válida
+			if not url.startswith('http'):
+				raise ValueError(f"URL inválida: {url}")
+			
+			# Atualizar o DataFrame
+			self.researchers_df.loc[0, 'profile_url'] = url
+			
+			# Salvar no CSV
+			self.researchers_df.to_csv(self.csv_path, index=False)
+			
+			# Recarregar o DataFrame para garantir
+			self.researchers_df = pd.read_csv(self.csv_path, dtype={'nome': str, 'profile_url': str})
+			
+		except Exception as e:
+			print(f"Erro ao salvar URL no CSV: {e}")
+			raise e
 
 	@agent
 	def analista_scholar(self) -> Agent:
