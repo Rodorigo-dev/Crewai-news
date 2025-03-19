@@ -1,0 +1,32 @@
+task_analise_scholar:
+  description: > 
+    Analyze the Google Scholar profile at URL {perfil_url}. 
+    Collect the following information:
+    - Main research area of the author
+    - Title and URL of up to 5 relevant articles
+    - Total number of citations
+  expected_output: > 
+    A structured JSON with EXACTLY the following fields, using exactly these key names:
+    {
+      "name": "Nome do pesquisador",
+      "profile_url": "URL completa do perfil",
+      "research_area": "Área principal de pesquisa",
+      "total_citations": 123,
+      "articles": [
+        {"title": "Título do artigo 1", "url": "URL do artigo 1"},
+        {"title": "Título do artigo 2", "url": "URL do artigo 2"},
+        ...
+      ]
+    }
+    DO NOT translate the field names. Use exactly these JSON keys: name, profile_url, research_area, total_citations, articles, title, url.
+  agent: analista_scholar
+
+task_busca_perfil:
+  description: >
+    Search for the profile of the researcher '{researcher_name}' on Google Scholar using exactly this name.
+    Do not try other names or variations.
+  expected_output: >
+    The exact URL of the researcher's Google Scholar profile.
+  agent: buscador_scholar
+
+

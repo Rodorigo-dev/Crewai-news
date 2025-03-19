@@ -1,134 +1,102 @@
-from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task
-from tools.custom_tool import ScholarCrawlerTool
+from crewai import Agent, Task, Process, Crew
+from tools.scholar_crawler_tool import ScholarCrawlerTool
 from tools.scholar_search_tool import ScholarSearchTool
-import pandas as pd
-import os
-from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
-@CrewBase
-class CrawlCrew():
+class CrawlCrew:
 	"""CrawlCrew para análise de perfis do Google Scholar"""
 
-	agents_config = 'config/agents.yaml'
-	tasks_config = 'config/tasks.yaml'
+	def __init__(self, researcher_name: str):
+		self.researcher_name = researcher_name.strip()
+		self.profile_url = None
 
-	def __init__(self):
-		super().__init__()
-		# Obter o caminho absoluto para o arquivo CSV
-		current_dir = os.path.dirname(os.path.abspath(__file__))
-		self.csv_path = os.path.join(current_dir, 'data', 'researchers.csv')
+	def create_agents(self):
+		"""Criar os agentes da crew"""
 		
-		try:
-			# Especificar os tipos das colunas
-			dtype_dict = {
-				'nome': str,
-				'profile_url': str
-			}
-			self.researchers_df = pd.read_csv(self.csv_path, dtype=dtype_dict)
-			self.researcher_name = self.researchers_df['nome'].iloc[0].strip()
-		except FileNotFoundError:
-			raise Exception(f"Arquivo CSV não encontrado em: {self.csv_path}")
-		except Exception as e:
-			raise Exception(f"Erro ao ler o arquivo CSV: {e}")
-
-	def save_profile_url(self, task_output):
-		"""Salva a URL do perfil no CSV"""
-		try:
-			# Converter o TaskOutput para string e limpar
-			url = str(task_output).strip()
-			print(f"Salvando URL no CSV: {url}")  # Debug
-			
-			# Verificar se a URL é válida
-			if not url.startswith('http'):
-				raise ValueError(f"URL inválida: {url}")
-			
-			# Atualizar o DataFrame
-			self.researchers_df.loc[0, 'profile_url'] = url
-			
-			# Salvar no CSV
-			self.researchers_df.to_csv(self.csv_path, index=False)
-			
-			# Recarregar o DataFrame para garantir
-			self.researchers_df = pd.read_csv(self.csv_path, dtype={'nome': str, 'profile_url': str})
-			
-		except Exception as e:
-			print(f"Erro ao salvar URL no CSV: {e}")
-			raise e
-
-	@agent
-	def analista_scholar(self) -> Agent:
-		return Agent(
-			config=self.agents_config['analista_scholar'],
+		# Agente especializado em buscar perfis
+		self.buscador_scholar = Agent(
+			role='Especialista em busca de perfis acadêmicos',
+			goal='Encontrar o perfil correto do pesquisador no Google Scholar',
+			backstory="""Você é um especialista em buscar perfis acadêmicos no Google Scholar.
+			Sua missão é encontrar o perfil correto do pesquisador usando o nome fornecido.""",
 			verbose=True,
-			tools=[ScholarCrawlerTool()]
-		)
-
-	@agent
-	def buscador_scholar(self) -> Agent:
-		return Agent(
-			config=self.agents_config['buscador_scholar'],
-			verbose=True,
+			allow_delegation=False,
 			tools=[ScholarSearchTool()]
 		)
 
-	@task
-	def task_busca_perfil(self) -> Task:
-		return Task(
-			description=f"Buscar o perfil de '{self.researcher_name}' no Google Scholar",
-			expected_output="A URL do perfil do Google Scholar do pesquisador",
-			agent=self.buscador_scholar(),
-			context=[
-				{
-					"researcher_name": self.researcher_name,
-					"description": f"Buscar o perfil de '{self.researcher_name}' no Google Scholar",
-					"instruction": f"Use a ferramenta Google Scholar Search para buscar exatamente este nome: '{self.researcher_name}'",
-					"expected_output": "A URL do perfil encontrado no Google Scholar"
-				}
-			],
-			callback=self.save_profile_url  # Callback para salvar a URL no CSV
+		# Agente especializado em analisar perfis
+		self.analista_scholar = Agent(
+			role='Analista de perfis acadêmicos',
+			goal='Analisar detalhadamente o perfil do pesquisador',
+			backstory="""Você é um analista especializado em perfis acadêmicos.
+			Sua missão é extrair e analisar todas as informações relevantes do perfil.""",
+			verbose=True,
+			allow_delegation=False,
+			tools=[ScholarCrawlerTool()]
 		)
 
-	@task
-	def task_analise_scholar(self) -> Task:
-		# Ler a URL do CSV e garantir que é string
-		profile_url = str(self.researchers_df['profile_url'].iloc[0])
+	def create_tasks(self):
+		"""Criar as tasks da crew"""
 		
-		# Verificar se a URL é válida
-		if pd.isna(profile_url) or profile_url.strip() == '':
-			raise Exception("URL do perfil não encontrada no CSV")
-		
-		return Task(
-			description=f"Analisar o perfil do Google Scholar na URL: {profile_url}",
-			expected_output="Informações detalhadas do perfil em formato JSON",
-			agent=self.analista_scholar(),
+		# Task para buscar o perfil
+		self.task_busca = Task(
+			description=f"Buscar o perfil de '{self.researcher_name}' no Google Scholar",
+			agent=self.buscador_scholar,
+			expected_output="A URL do perfil do Google Scholar do pesquisador",
 			context=[
-				{
-					"description": "Analisar o perfil e extrair informações relevantes",
-					"instruction": "Use a ferramenta Google Scholar Crawler com a URL fornecida",
-					"expected_output": "JSON com área principal, artigos e citações",
-					"profile_url": profile_url
-				}
+				f"Você deve buscar o perfil do pesquisador '{self.researcher_name}' no Google Scholar.",
+				"Use a ferramenta de busca para encontrar a URL correta do perfil.",
+				"Retorne apenas a URL encontrada."
+			],
+			callback=self.save_profile_url
+		)
+
+		# Task para analisar o perfil
+		self.task_analise = Task(
+			description=f"Analisar o perfil do Google Scholar na URL: {self.profile_url}",
+			agent=self.analista_scholar,
+			expected_output="Informações detalhadas do perfil em formato JSON",
+			context=[
+				"Você deve analisar o perfil do pesquisador na URL fornecida.",
+				"Use a ferramenta de crawler para extrair todas as informações relevantes.",
+				"Retorne os dados em formato JSON com: área principal, artigos relevantes e citações."
 			]
 		)
 
-	@crew
-	def crew(self) -> Crew:
-		"""Cria a crew CrawlCrew"""
-		# Criar o LLM que será usado como manager
-		manager_llm = ChatOpenAI(
-			model="gpt-4o-mini",
-			temperature=0,
+	def save_profile_url(self, task_output):
+		"""Callback para salvar a URL do perfil"""
+		url = str(task_output).strip()
+		if not url.startswith('http'):
+			raise ValueError(f"URL inválida: {url}")
+		self.profile_url = url
+
+	def run(self):
+		"""Executar a crew"""
+		
+		# Criar os agentes
+		self.create_agents()
+		
+		# Criar as tasks
+		self.create_tasks()
+		
+		# Configurar o LLM
+		llm = ChatOpenAI(
+			model="gpt-4-0125-preview",
+			temperature=0.7,
+			verbose=True
+		)
+		
+		# Criar e executar a crew
+		crew = Crew(
+			agents=[self.buscador_scholar, self.analista_scholar],
+			tasks=[self.task_busca, self.task_analise],
+			manager_llm=llm,
+			process=Process.sequential,
 			verbose=True
 		)
 
-		return Crew(
-			agents=[self.buscador_scholar(), self.analista_scholar()],
-			tasks=[self.task_busca_perfil(), self.task_analise_scholar()],
-			process=Process.sequential,
-			manager_llm=manager_llm,
-			verbose=True
-		)
+		return crew.kickoff()
