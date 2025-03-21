@@ -80,53 +80,151 @@ if st.button("Buscar e Analisar"):
                         for artigo in artigos:
                             titulo = artigo["title"]
                             url = artigo.get("url", "")
+                            abstract = artigo.get("abstract", "")
+                            
+                            # Exibir título com link se disponível
                             if url:
                                 st.markdown(f"- [{titulo}]({url})")
                             else:
                                 st.markdown(f"- {titulo}")
+                            
+                            # Exibir resumo em um expander se disponível e válido
+                            if abstract:
+                                # Verificar se o abstract é válido (não apenas uma referência bibliográfica)
+                                is_valid = (
+                                    len(abstract) > 100  # Abstracts úteis geralmente têm mais de 100 caracteres
+                                    and not abstract.count(',') == len(abstract.split()) - 1  # Não é apenas uma lista de nomes
+                                    and not any(term in abstract and len(abstract) < 150 
+                                               for term in ["IEEE", "Conference", "Congress", "Proceedings"])  # Não é apenas uma referência
+                                )
+                                
+                                if is_valid:
+                                    with st.expander("Ver resumo"):
+                                        st.markdown(abstract)
                     
                     # Coautores
                     if "coauthors" in resultado_json and resultado_json["coauthors"]:
                         coautores = resultado_json["coauthors"]
                         st.subheader("👥 Principais Coautores")
                         
+                        # CSS para melhorar o visual dos cards de coautores
+                        st.markdown("""
+                        <style>
+                        .coauthor-card {
+                            padding: 10px;
+                            margin-bottom: 10px;
+                            border-radius: 5px;
+                            background-color: #f8f9fa;
+                        }
+                        </style>
+                        """, unsafe_allow_html=True)
+                        
                         # Determinar quantos coautores mostrar inicialmente
                         total_coautores = len(coautores)
                         coautores_mostrados = min(5, total_coautores)  # Mostrar no máximo 5 inicialmente
                         
-                        # Seção para exibir coautores
-                        for i in range(coautores_mostrados):
-                            coautor = coautores[i]
-                            col1, col2 = st.columns([3, 2])
+                        # Dividir coautores em duas colunas
+                        for i in range(0, coautores_mostrados, 2):
+                            col1, col2 = st.columns(2)
+                            
+                            # Primeira coluna
                             with col1:
-                                nome = coautor["name"]
-                                if coautor.get("profile_url"):
-                                    st.markdown(f"- [{nome}]({coautor['profile_url']})")
-                                else:
-                                    st.markdown(f"- {nome}")
+                                if i < coautores_mostrados:
+                                    coautor = coautores[i]
+                                    nome = coautor["name"]
+                                    
+                                    # Box para cada coautor com estilo
+                                    st.markdown('<div class="coauthor-card">', unsafe_allow_html=True)
+                                    
+                                    # Nome com link se disponível
+                                    if coautor.get("profile_url"):
+                                        st.markdown(f"**[{nome}]({coautor['profile_url']})**")
+                                    else:
+                                        st.markdown(f"**{nome}**")
+                                    
+                                    # Informações adicionais abaixo do nome
+                                    if coautor.get("institution"):
+                                        st.caption(f"🏫 {coautor['institution']}")
+                                    if coautor.get("email_domain"):
+                                        st.caption(f"📧 {coautor['email_domain']}")
+                                    
+                                    st.markdown('</div>', unsafe_allow_html=True)
+                            
+                            # Segunda coluna
                             with col2:
-                                if coautor.get("institution"):
-                                    st.text(f"Instituição: {coautor['institution']}")
-                                if coautor.get("email_domain"):
-                                    st.text(f"Email: {coautor['email_domain']}")
+                                if i + 1 < coautores_mostrados:
+                                    coautor = coautores[i + 1]
+                                    nome = coautor["name"]
+                                    
+                                    # Box para cada coautor com estilo
+                                    st.markdown('<div class="coauthor-card">', unsafe_allow_html=True)
+                                    
+                                    # Nome com link se disponível
+                                    if coautor.get("profile_url"):
+                                        st.markdown(f"**[{nome}]({coautor['profile_url']})**")
+                                    else:
+                                        st.markdown(f"**{nome}**")
+                                    
+                                    # Informações adicionais abaixo do nome
+                                    if coautor.get("institution"):
+                                        st.caption(f"🏫 {coautor['institution']}")
+                                    if coautor.get("email_domain"):
+                                        st.caption(f"📧 {coautor['email_domain']}")
+                                    
+                                    st.markdown('</div>', unsafe_allow_html=True)
                         
                         # Se houver mais de 5 coautores, mostrar botão para exibir todos
                         if total_coautores > 5:
                             with st.expander(f"Ver todos os {total_coautores} coautores"):
-                                for i in range(5, total_coautores):
-                                    coautor = coautores[i]
-                                    col1, col2 = st.columns([3, 2])
+                                # Mostrar coautores adicionais também em duas colunas
+                                for i in range(5, total_coautores, 2):
+                                    col1, col2 = st.columns(2)
+                                    
+                                    # Primeira coluna
                                     with col1:
-                                        nome = coautor["name"]
-                                        if coautor.get("profile_url"):
-                                            st.markdown(f"- [{nome}]({coautor['profile_url']})")
-                                        else:
-                                            st.markdown(f"- {nome}")
+                                        if i < total_coautores:
+                                            coautor = coautores[i]
+                                            nome = coautor["name"]
+                                            
+                                            # Box para cada coautor com estilo
+                                            st.markdown('<div class="coauthor-card">', unsafe_allow_html=True)
+                                            
+                                            # Nome com link se disponível
+                                            if coautor.get("profile_url"):
+                                                st.markdown(f"**[{nome}]({coautor['profile_url']})**")
+                                            else:
+                                                st.markdown(f"**{nome}**")
+                                            
+                                            # Informações adicionais abaixo do nome
+                                            if coautor.get("institution"):
+                                                st.caption(f"🏫 {coautor['institution']}")
+                                            if coautor.get("email_domain"):
+                                                st.caption(f"📧 {coautor['email_domain']}")
+                                            
+                                            st.markdown('</div>', unsafe_allow_html=True)
+                                    
+                                    # Segunda coluna
                                     with col2:
-                                        if coautor.get("institution"):
-                                            st.text(f"Instituição: {coautor['institution']}")
-                                        if coautor.get("email_domain"):
-                                            st.text(f"Email: {coautor['email_domain']}")
+                                        if i + 1 < total_coautores:
+                                            coautor = coautores[i + 1]
+                                            nome = coautor["name"]
+                                            
+                                            # Box para cada coautor com estilo
+                                            st.markdown('<div class="coauthor-card">', unsafe_allow_html=True)
+                                            
+                                            # Nome com link se disponível
+                                            if coautor.get("profile_url"):
+                                                st.markdown(f"**[{nome}]({coautor['profile_url']})**")
+                                            else:
+                                                st.markdown(f"**{nome}**")
+                                            
+                                            # Informações adicionais abaixo do nome
+                                            if coautor.get("institution"):
+                                                st.caption(f"🏫 {coautor['institution']}")
+                                            if coautor.get("email_domain"):
+                                                st.caption(f"📧 {coautor['email_domain']}")
+                                            
+                                            st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Arquivo salvo
                     st.divider()

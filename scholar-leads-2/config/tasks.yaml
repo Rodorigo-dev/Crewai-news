@@ -3,7 +3,7 @@ task_analise_scholar:
     Analyze the Google Scholar profile at URL {perfil_url}. 
     Collect the following information:
     - Main research area of the author
-    - Title and URL of up to 5 relevant articles
+    - Title, URL and abstract (when available) of up to 5 relevant articles
     - Total number of citations
     - All available coauthors with their name, profile URL, institution, and email domain (when available)
   expected_output: > 
@@ -14,7 +14,7 @@ task_analise_scholar:
     "research_area": "Physics",
     "total_citations": 12000,
     "articles": [
-      {"title": "Relativity", "url": "https://link_para_o_artigo"}
+      {"title": "Relativity", "url": "https://link_para_o_artigo", "abstract": "This paper presents the theory of special relativity..."}
     ],
     "coauthors": [
       {
@@ -26,7 +26,7 @@ task_analise_scholar:
       ... (all coauthors)
     ]
     }
-    DO NOT translate the field names. Use exactly these JSON keys: name, profile_url, research_area, total_citations, articles, coauthors, title, url, institution, email_domain.
+    DO NOT translate the field names. Use exactly these JSON keys: name, profile_url, research_area, total_citations, articles, coauthors, title, url, abstract, institution, email_domain.
     IMPORTANT: Your final answer must be the exact JSON output from the tool. DO NOT modify key names or change the structure.
   agent: analista_scholar
 

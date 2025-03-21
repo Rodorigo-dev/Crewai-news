@@ -5,7 +5,7 @@ class Article(BaseModel):
     """Modelo para representar um artigo academico"""
     title: str = Field(..., description="article title")
     url: HttpUrl = Field(..., description="article URL")
-    summary: Optional[str] = None  # O resumo pode não estar disponível
+    abstract: Optional[str] = Field(None, description="article abstract/summary extracted from the article page")
 
 class Coauthor(BaseModel):
     """Modelo para representar um coautor"""
