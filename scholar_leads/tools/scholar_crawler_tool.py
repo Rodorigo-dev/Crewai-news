@@ -57,6 +57,14 @@ async def crawl_scholar_profile(profile_url: str) -> str:
             total_citations = soup.select_one('#gsc_rsb_st td.gsc_rsb_std')
             total_citations = int(total_citations.text) if total_citations else 0
 
+            # Extrair email do pesquisador
+            email_domain = soup.select_one('#gsc_prf_ivh.gsc_prf_il')
+            email_domain = email_domain.text if email_domain else "Not found"
+
+            # Extrair instituição do pesquisador
+            institution = soup.select_one('#gsc_prf_il')
+            institution = institution.text if institution else "Not found"
+            
             # Extrair artigos (limitado a 5)
             articles = []
             article_elements = soup.select('#gsc_a_b .gsc_a_t a')[:5]
@@ -70,10 +78,12 @@ async def crawl_scholar_profile(profile_url: str) -> str:
             # Criar o modelo estruturado
             scholar_data = ScholarProfile(
                 name=name,
-                profile_url=profile_url,
+                profile_url=profile_url, 
+                email_domain = email_domain, # gsc_prf_ivh.gsc_prf_il
+                institution = institution, # a.gsc_prf_ila
                 research_area=research_area,
                 total_citations=total_citations,
-                articles=articles
+                articles=articles,
             )
             
             return scholar_data.model_dump_json()

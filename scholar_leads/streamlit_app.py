@@ -5,10 +5,10 @@ import os
 from utils import save_result
 
 # Configuração da página
-st.set_page_config(page_title="Google Scholar Search", page_icon="🔍", layout="centered")
+st.set_page_config(page_title="Google Scholar Leads Search", page_icon="🔍", layout="centered")
 
 # Título do app
-st.title("🔍 Busca e Análise no Google Scholar")
+st.title("🔍 Google Scholar Leads Search")
 
 # Campo de input para o nome do pesquisador
 pesquisador = st.text_input("Digite o nome do pesquisador:")
@@ -43,7 +43,15 @@ if st.button("Buscar e Analisar"):
                 # Área Principal
                 st.subheader("📚 Área Principal")
                 st.info(resultado_json["research_area"])
-                
+
+                # Instituição
+                st.subheader("📚 Instituição")
+                st.info(resultado_json["institution"])
+
+                # Dominio do Email
+                st.subheader("📧 Dominio do Email")
+                st.info(resultado_json["email_domain"])
+
                 # Citações
                 st.subheader("📊 Total de Citações")
                 st.metric("Citações", resultado_json["total_citations"])

@@ -8,17 +8,18 @@ task_analise_scholar:
   expected_output: > 
     A structured JSON with EXACTLY the following fields, using exactly these key names:
     {
-      "name": "Nome do pesquisador",
-      "profile_url": "URL completa do perfil",
-      "research_area": "Área principal de pesquisa",
-      "total_citations": 123,
-      "articles": [
-        {"title": "Título do artigo 1", "url": "URL do artigo 1"},
-        {"title": "Título do artigo 2", "url": "URL do artigo 2"},
-        ...
+    "name": "Albert Einstein",
+    "profile_url": "https://scholar.google.com/citations?hl=pt-BR&user=ABCDE",
+    "email_domain": "einstein.com",
+    "institution": "Princeton University",
+    "research_area": "Physics",
+    "total_citations": 12000,
+    "articles": [
+      {"title": "Relativity", "url": "https://link_para_o_artigo"}
       ]
     }
     DO NOT translate the field names. Use exactly these JSON keys: name, profile_url, research_area, total_citations, articles, title, url.
+    IMPORTANT: Your final answer must be the exact JSON output from the tool. DO NOT modify key names or change the structure.
   agent: analista_scholar
 
 task_busca_perfil:

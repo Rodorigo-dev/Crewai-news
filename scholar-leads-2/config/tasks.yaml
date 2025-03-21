@@ -1,0 +1,45 @@
+task_analise_scholar:
+  description: > 
+    Analyze the Google Scholar profile at URL {perfil_url}. 
+    Collect the following information:
+    - Main research area of the author
+    - Title and URL of up to 5 relevant articles
+    - Total number of citations
+    - All available coauthors with their name, profile URL, institution, and email domain (when available)
+  expected_output: > 
+    A structured JSON with EXACTLY the following fields, using exactly these key names:
+    {
+    "name": "Albert Einstein",
+    "profile_url": "https://scholar.google.com/citations?hl=pt-BR&user=ABCDE",
+    "research_area": "Physics",
+    "total_citations": 12000,
+    "articles": [
+      {"title": "Relativity", "url": "https://link_para_o_artigo"}
+    ],
+    "coauthors": [
+      {
+        "name": "Niels Bohr",
+        "profile_url": "https://scholar.google.com/citations?user=FGHIJ",
+        "institution": "Copenhagen University",
+        "email_domain": "copenhagen.edu"
+      },
+      ... (all coauthors)
+    ]
+    }
+    DO NOT translate the field names. Use exactly these JSON keys: name, profile_url, research_area, total_citations, articles, coauthors, title, url, institution, email_domain.
+    IMPORTANT: Your final answer must be the exact JSON output from the tool. DO NOT modify key names or change the structure.
+  agent: analista_scholar
+
+task_busca_perfil:
+  description: >
+    Search for the profile of the researcher '{researcher_name}' on Google Scholar using the provided information.
+    Additional information may include email domain and institution which will be concatenated to the search query to improve accuracy.
+    
+    Pesquisador: '{researcher_name}'
+    Email: '{email}'
+    Instituição: '{institution}'
+  expected_output: >
+    The URL of the researcher's Google Scholar profile. If multiple profiles are found, list them one per line.
+  agent: buscador_scholar
+
+
