@@ -10,24 +10,7 @@ from pydantic import BaseModel
 from datetime import datetime
 dotenv.load_dotenv()
 
-class Coauthor(BaseModel):
-    name: str
-    institution: str
-    email_domain: str
 
-class Article(BaseModel):
-    title: str
-    abstract: str
-    url: str
-
-class Researcher(BaseModel):
-    name: str
-    institution: str
-    research_area: str
-    total_citations: str
-    email_domain: str
-    articles: List[Article]
-    coauthors: List[Coauthor]
     
 
 

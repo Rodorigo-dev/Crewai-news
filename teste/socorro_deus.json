@@ -1,0 +1,143 @@
+[
+    {
+        "name": "Felipe Rafael de Souza",
+        "institution": "Universidade Federal de Juiz de Fora",
+        "research_area": "Artificial Intelligence, Evolutionary Computation, Data Mining",
+        "total_citations": "26",
+        "email_domain": "",
+        "articles": [],
+        "coauthors": []
+    },
+    {
+        "name": "Felipe Rafael de Souza",
+        "institution": "Universidade Federal de Juiz de Fora",
+        "research_area": "Artificial Intelligence, Evolutionary Computation, Data Mining",
+        "total_citations": "26",
+        "email_domain": "ice.ufjf.br",
+        "articles": [],
+        "coauthors": [
+            {
+                "name": "Heder Soares Bernardino",
+                "institution": "Universidade Federal de Juiz de Fora",
+                "email_domain": "ice.ufjf.br"
+            },
+            {
+                "name": "JOAO MARCOS DE FREITAS",
+                "institution": "Universidade Federal de Juiz de Fora",
+                "email_domain": "ice.ufjf.br"
+            },
+            {
+                "name": "Leonardo Goliatt",
+                "institution": "Professor, Universidade Federal de Juiz de Fora",
+                "email_domain": "ufjf.br"
+            }
+        ]
+    },
+    {
+        "name": "Researcher Name",
+        "institution": "Research Institution",
+        "research_area": "Research Area",
+        "total_citations": "Total Citations",
+        "email_domain": "example.com",
+        "articles": [
+            {
+                "title": "Article Title 1",
+                "abstract": "Abstract of article 1.",
+                "url": "https://example.com/article1"
+            },
+            {
+                "title": "Article Title 2",
+                "abstract": "Abstract of article 2.",
+                "url": "https://example.com/article2"
+            }
+        ],
+        "coauthors": [
+            {
+                "name": "Coauthor Name 1",
+                "institution": "Coauthor Institution 1",
+                "email_domain": "coauthor1.com"
+            },
+            {
+                "name": "Coauthor Name 2",
+                "institution": "Coauthor Institution 2",
+                "email_domain": "coauthor2.com"
+            }
+        ]
+    },
+    {
+        "name": "Researcher Name",
+        "institution": "Research Institution",
+        "research_area": "Research Area",
+        "total_citations": "Total Citations",
+        "email_domain": "example.com",
+        "articles": [
+            {
+                "title": "Article Title 1",
+                "abstract": "Abstract of Article 1",
+                "url": "https://example.com/article1"
+            },
+            {
+                "title": "Article Title 2",
+                "abstract": "Abstract of Article 2",
+                "url": "https://example.com/article2"
+            }
+        ],
+        "coauthors": [
+            {
+                "name": "Coauthor Name 1",
+                "institution": "Coauthor Institution 1",
+                "email_domain": "coauthor1.com"
+            },
+            {
+                "name": "Coauthor Name 2",
+                "institution": "Coauthor Institution 2",
+                "email_domain": "coauthor2.com"
+            }
+        ]
+    },
+    {
+        "name": "Felipe Rafael de Souza",
+        "institution": "Universidade Federal de Juiz de Fora",
+        "research_area": "Artificial Intelligence, Evolutionary Computation, Data Mining",
+        "total_citations": "26",
+        "email_domain": "ice.ufjf.br",
+        "articles": [
+            {
+                "title": "Evolving controllers for mario AI using grammar-based genetic programming",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:IjCSPb-OGe4C"
+            },
+            {
+                "title": "A hybrid grammar-based genetic programming for symbolic regression problems",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:qjMakFHDy7sC"
+            },
+            {
+                "title": "A reward function using image processing for a deep reinforcement learning approach applied to the sonic the hedgehog game",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:eQOLeE2rZwMC"
+            },
+            {
+                "title": "A hybrid approach of grammar-based genetic programming and differential evolution for symbolic regression",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:u-x6o8ySG0sC"
+            },
+            {
+                "title": "PREDIÇÃO DO ANGULO DE RESISTENCIA AO CISALHAMENTO DOS SOLOS VIA PROGRAMAÇÃO GENETICA GRAMATICAL",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:ufrVoPGSRksC"
+            },
+            {
+                "title": "Aprendizado por Reforço Assistido por Imitação para Jogos Digitais",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:d1gkVwhDpl0C"
+            },
+            {
+                "title": "PROGRAMAÇÃO GENÉTICA PARA A PREVISÃO DE PROPRIEDADES MECÂNICAS DE CONCRETOS DE AGREGADOS LEVES",
+                "abstract": "",
+                "url": "/citations?view_op=view_citation&hl=pt-BR&user=sq72hLsAAAAJ&citation_for_view=sq72hLsAAAAJ:ufrVoPGSRksC"
+            }
+        ],
+        "coauthors": []
+    }
+]
