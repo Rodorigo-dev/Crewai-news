@@ -44,26 +44,22 @@ async def main():
     )
     
     llm_strategy = LLMExtractionStrategy(
-        llm_config=llm_config,  # Use o objeto llm_config 
+        llm_config=llm_config,
         schema=Researcher.model_json_schema(),
         extraction_type="schema",
         instruction="""
-        Extract researcher information from the webpage.
-        The researcher information should be structured in the following JSON format:
-        {
-            "name": str,
-            "institution": str,
-            "research_area": str,
-            "total_citations": str,
-            "email_domain": str,
-            "articles": List[Article],
-            "coauthors": List[Coauthor]
-        }
-
-        The final output MUST CONSIST IN A **SINGLE** JSON OBJECT.
-
+        Extract ONLY real researcher information from the webpage.
+        DO NOT include any example or placeholder data in your response.
+        ALL data must be derived from the actual content of the page.
+        
+        Create ONLY ONE JSON object for the researcher.
+        Consolidate all information (articles, coautho  rs, etc.) into a single researcher entry.
+        
+        DO NOT create any entries with values like 'Researcher Name', 'Article Title 1', etc.
+        If you cannot find information for a field, leave it as an empty string or empty array.
+        
+        The final output MUST CONSIST IN A SINGLE JSON OBJECT.
         """,
-        chunk_token_threshold=1000,
         input_format="html"
     )
 
